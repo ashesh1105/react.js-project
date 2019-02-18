@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>React tutorial</title>
+    <script src="https://fb.me/react-0.14.7.js"></script>
+    <script src="https://fb.me/react-dom-0.14.7.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.2/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/babel">
+    ReactDOM.render(
+      <div>
+        <h1>Hello world, this is written in JSX!</h1>
+        <h2>JSX: "JavaScript Syntax Extension"</h2>
+        <h2>Babel is used to convert JSX into Simple JavaScript</h2>
+        <h2>You can use following site and "Try it out" tab on this to try these conversions:<br/>
+        https://babeljs.io/</h2>
+        <h3>Script to include for using Babel is: https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.2/browser.min.js
+        <br/>But you don't need to transform JSX to JavaScript any more with newer React versions since you'll use Webpack etc.
+        </h3>
+      </div>,
+      document.getElementById("app")
+    );
+
+    // ReactDOM.render(
+    //   React.createElement(
+    //     'h1',
+    //     null,
+    //     'Hello World!'
+    //   ),
+    //   document.getElementById('app')
+    // );
+    </script>
+  </body>
+</html>
