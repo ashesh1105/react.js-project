@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>React tutorial</title>
+    <script src="https://fb.me/react-0.14.7.js"></script>
+    <script src="https://fb.me/react-dom-0.14.7.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.2/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/babel">
+    var MyComponent = React.createClass({
+      getInitialState: function() {
+        return {
+          tasks: [
+            {'task': 'Do the laundry', 'id': 1},
+            {'task': 'Wash floor', id: 2},
+            {'task': 'Do grocery', id: 3}
+          ],
+          title: ''
+        }
+      },
+      render: function() {
+        return (
+          <div>
+            <ul>
+            {/* map function takes a function with individual elements as argument */}
+              {this.state.tasks.map(function(element) {
+                // key is passed below since React needs a unique id for each record
+                return <DoTask title={element.task} key={element.id}></DoTask>
+              })}
+            </ul>
+          </div>
+        )
+      }
+    });
+
+    // Stateless Functional Component! As Facebook suggests, use them more and more
+    var DoTask = function(props) {
+      return <li>Task: {props.title}</li>
+    }
+
+    ReactDOM.render(
+      <MyComponent />,
+      document.getElementById('app')
+    );
+
+    </script>
+  </body>
+</html>
