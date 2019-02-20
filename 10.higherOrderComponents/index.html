@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>React tutorial</title>
+    <script src="https://fb.me/react-0.14.7.js"></script>
+    <script src="https://fb.me/react-dom-0.14.7.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="lesson11styling.css">
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/babel">
+    /*
+      Higher Order Components are used to pass the functionalities from one component to another.
+      It helps avoid writing boiler plate code again and again. We can also use prebuilt components.
+    */
+    let BaseCount = (BasicComponent) => class extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          count: 0,
+          text: "Hello"
+        }
+        this.incrementCount = this.incrementCount.bind(this);
+      }
+      incrementCount() {
+        this.setState({
+          count: this.state.count + 1
+        });
+      }
+      render() {
+        return (
+          <div className="container">
+            // Entire state data can be passed as properties to stateless functional components by using {...state}
+            // This replaces passing count as count={this.state.count}. Also helps when so many variables from state needs to be passed
+            <BasicComponent {...this.state} increment={this.incrementCount}/>
+          </div>
+        )
+      }
+    }
+
+    // Stateless Functional Component create, which we will pass to BaseCount to get incrementCount functionality
+    const Button = (props) => {
+      console.log(props)
+      return (
+        <button className="btn blue-btn" onClick={props.increment}>Count: {props.count}</button>
+      )
+    }
+    // Stateless Functional Component create, which we will pass to BaseCount to get incrementCount functionality
+    const Label = (props) => {
+      return (
+        <label onMouseMove={props.increment}>Count: {props.count} </label>
+      )
+    }
+    // Create new components out of Funational Components created above
+    let ExtendedButton = BaseCount(Button);
+    let ExtendedLabel = BaseCount(Label);
+
+    // We can combine multiple extended components into one Component. Since this does not need state, we can use
+    // const keyword to create a stateless component
+    const Container = () => {
+        return(
+          <div>
+            <ExtendedButton />
+            <ExtendedLabel />
+          </div>
+        )
+    }
+
+    // We can now render the component that will render both the Higher Order Components
+    ReactDOM.render(
+      <Container />,
+      document.getElementById('app')
+    );
+    </script>
+  </body>
+</html>

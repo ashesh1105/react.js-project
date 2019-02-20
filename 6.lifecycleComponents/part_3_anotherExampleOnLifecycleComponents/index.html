@@ -29,17 +29,27 @@
         })
       },
       componentWillReceiveProps: function(nextProps) {
-        console.log(nextProps);
-        console.log("Componentwillreceiveprops");
+        // Note that this method is not called when component is rendered initially. It is done on prior to subsequent rendering
+        console.log("componentWillReceiveProps method called!");
+        console.log("nextProps at componentWillReceiveProps method: ", nextProps);
         this.setState({
           popular: nextProps.likes >= 10
         })
+        if (nextProps.likes >= 10) {
+          console.log("You are now popular!");
+        }
       },
       shouldComponentUpdate: function(nextProps, nextState) {
-        console.log("Should update?");
+        console.log("shouldComponentUpdate method called!");
         console.log("Should update nextProps: ", nextProps);
         console.log("Should update nextState: ", nextState);
         return nextProps.likes % 2 === 0;
+        /*
+          If we uncomment the line above and comment the one below this, we will see component rendering every time
+          and not just when likes is an even number. Don't forget to return true, at least conditionally, else component
+          will never render.
+        */
+        // return true;
       },
       render: function() {
         console.log("Component Rendered");
@@ -50,7 +60,10 @@
           </div>
         )
       },
+      // Called every time component gets re-rendered. It has access to DOM
+      // Note that opposite to shouldComponentUpdate, this method get previous props and state as arguments
       componentDidUpdate: function(prevProps, prevState) {
+        console.log("componentDidUpdate method called!");
         console.log("Previous Props ", prevProps);
         console.log("Previous State ", prevState);
         console.log(ReactDOM.findDOMNode(this));

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>React tutorial</title>
+    <script src="https://fb.me/react-0.14.7.js"></script>
+    <script src="https://fb.me/react-dom-0.14.7.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.2/browser.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="stateChallengeStyling.css">
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/babel">
+    class StateChallengeComponent extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {
+          count: 0
+        }
+        this.incrementCount = this.incrementCount.bind(this);
+      }
+      incrementCount(value) {
+        console.log(this);
+        this.setState({
+          count: this.state.count + value
+        })
+      }
+      render() {
+        // You don't need to parse string to number if pass number as expression from ReactDOM ({})
+        //let valueOne = Number(this.props.valueOne);
+        let valueOne = this.props.valueOne;
+        let valueTwo = this.props.valueTwo;
+        let valueThree = this.props.valueThree;
+        let btnText = this.props.btnText;
+        return(
+          <div className="container">
+            <h1 className="container h1">Count: {this.state.count}</h1>
+            {/*
+            Using this.<method_name>.bind(this, <arg1>, <arg2>..) is not a best practice.
+            When using ES6, we should bind a method in constructor (as above) as: this.<method_name> = this.<method_name>.bind(this)
+            and then we can use arrow function in render method to pass the func as: this.<method_name>(this.props.value), as below
+            */}
+            <Button style="btn blue-btn" value={valueOne} btnText={`${btnText} ${valueOne}`} clickHandler={() => this.incrementCount(this.props.valueOne)} />
+            <Button style="btn green-btn" value={valueTwo} btnText={`${btnText} ${valueTwo}`} clickHandler={() => this.incrementCount(this.props.valueTwo)} />
+            <Button style="btn purple-btn" value={valueThree} btnText={`${btnText} ${valueThree}`} clickHandler={() => this.incrementCount(this.props.valueThree)} />
+          </div>
+        )
+      }
+    }
+    // Set defaultProps in ES6 way
+    StateChallengeComponent.defaultProps = {
+      valueOne: 1,
+      valueTwo: 5,
+      valueThree: 10,
+      btnText: 'Add'
+    }
+
+    // Stateless functional components using ES6
+    // This allows us to create as many buttons we need in a generic way
+    const Button = (props) => {
+      return (
+        <button className={props.style} value={props.value} onClick={props.clickHandler}>{props.btnText}</button>
+      )
+    }
+
+    // Validate the properties passed to stateless functional component
+    Button.propTypes = {
+      btnText: React.PropTypes.string,
+      style: React.PropTypes.string,
+      value: React.PropTypes.number,
+      clickHandler: React.PropTypes.func.isRequired
+    }
+
+    ReactDOM.render(
+      <StateChallengeComponent valueTwo={100} valueThree={1000} btnText="Sum" />,
+      document.getElementById('app')
+    );
+
+    </script>
+  </body>
+</html>
