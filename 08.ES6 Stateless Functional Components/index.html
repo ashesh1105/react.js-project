@@ -11,6 +11,7 @@
   <body>
     <div id="app"></div>
     <script type="text/babel">
+    // Stateless Functional Components
     class Counter extends React.Component {
       constructor(props) {
         super(props);
@@ -21,11 +22,13 @@
       click() {
         // alert("Clicked");
         console.log("Clicked");
+        console.log(this);
       }
       render() {
+        // Instantiate Button functional component and supply the properties defined with Button
+        // Notice you use className instead of class with JSX
         return (
           <div className="container">
-            // Instantiate Button functional component and supply the properties defined with Button
             <Button className="btn blue-btn" clickHandler={this.click} text="Click me!" />
           </div>
         )
@@ -36,13 +39,13 @@
     Counter.propTypes = { text: React.PropTypes.string }
 
     // An example of Stateless Functional Component using ES6 Arrow Function
+    // Since we only passed "text" into props, className and clickHandler will be used as default defined at render method of Counter component
     const Button = (props) => {
       return (
         // Properties 'className', 'clickHandler' and 'text' will be supplied from render method where this functional component will be instantiated
         <button className={props.className} onClick={props.clickHandler}>{props.text}</button>
       )
     }
-
 
     ReactDOM.render(
       <Counter />,
