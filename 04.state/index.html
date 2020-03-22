@@ -10,34 +10,43 @@
   <body>
     <div id="app"></div>
     <script type="text/babel">
-    var NameStateComponent = React.createClass({
-      resetName: function() {
+    class NameStateComponent extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          name: ''
+        }
+        this.resetName = this.resetName.bind(this);
+        this.nameChanged = this.nameChanged.bind(this);
+      }
+
+      resetName() {
+        // Reset state.name to empty
         this.setState({
           name: ''
-        })
-      },  // Never skip comma between functions of a component!
-      nameChanged: function(event) {
+        });
+        // Clear the text field
+        document.getElementById('input1').value = ''
+      }
+
+      nameChanged(event) {
         // Never do this.name = event.target.value. Use React to do that explicitely
         // this.setState comes handy in that case and helps avoid many human errors
         this.setState({
           name: event.target.value
         })
-      },
-      getInitialState: function() {
-        return {
-          name: ''
-        }
-      },
-      render: function() {
+      }
+
+      render() {
         return (
           <div>
-            <input type='text' onChange={this.nameChanged}></input>
+            <input id='input1' type='text' onChange={this.nameChanged}></input>
             <h1>Hello, my name is: {this.state.name}</h1>
             <button onClick={this.resetName}>Reset Name</button>
           </div>
         )
       }
-    });
+    }
 
     ReactDOM.render(
       <NameStateComponent />,

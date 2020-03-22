@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>React tutorial</title>
+    <script src="https://fb.me/react-0.14.7.js"></script>
+    <script src="https://fb.me/react-dom-0.14.7.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.2/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/babel">
+    class SecondComponent extends React.Component {
+      render() {
+        console.log(this);
+        let name = this.props.name;
+        let location = this.props.location;
+        let hobby = this.props.hobby;
+        return (
+          <div>
+            <p>Hello <b>{name}</b>!</p>
+            <p>I live in <b>{location}</b> and my hobby is <b>{hobby}.</b></p>
+          </div>
+        )
+      }
+    }
+
+    SecondComponent.defaultProps = {
+      
+      name: 'Mr Singh',
+      location: 'California',
+      hobby: 'music'
+      
+    }
+
+    SecondComponent.propTypes = {
+      name: React.PropTypes.string.isRequired,
+      location: React.PropTypes.string.isRequired
+    }
+
+    /*
+    This is how to supply data to props declared. Default data will fill-in as declared above
+    Note, there is no space between arguments sent. Also, if we send name=5, it will generate
+    an error because we defined PropTypes.name as string.
+    */
+    ReactDOM.render(
+      <SecondComponent name="Ashesh Jee" location="West San Jose" />,
+      document.getElementById('app')
+    );
+    </script>
+  </body>
+</html>
