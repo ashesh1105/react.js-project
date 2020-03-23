@@ -15,21 +15,19 @@ class App extends React.Component {
     this.loadPokemon = this.loadPokemon.bind(this);
   }
 
-  loadPokemon(url) {
+  async loadPokemon(url) {
     // fetch returns a promise: https://www.npmjs.com/package/whatwg-fetch
-    fetch(url)
-      .then(response => {
-        return response.json()
-      })
-      .then(json => {
-        console.log(json);
-        this.setState({
-          pokemon: json.game_indices
-        });
-        console.log(this.state)
-      }).catch(err => {
-        console.log(err);
+    try {
+      const response = await fetch(url);
+      const json = await response.json();
+      console.log(json);
+      this.setState({
+        pokemon: json.game_indices
       });
+      console.log(this.state)
+    } catch(error) {
+      console.log(error);
+    }
   }
 
   componentDidMount() {
