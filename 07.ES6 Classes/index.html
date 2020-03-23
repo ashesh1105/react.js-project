@@ -24,6 +24,9 @@
         // This way you don't need to bind it in render method and pass on your arguments easily from there
         this.click = this.click.bind(this);
       }
+      static getDefaultPropsCalled() {
+        console.log('getDefaultProps called!')
+      }
       click(value1, value2) {
         // alert("Clicked");
         console.log("1st argument passed from remder method: ", value1);
@@ -38,11 +41,16 @@
     }
 
     // This is how to define default props in ES6. Its equivalent to getDefaultProps method.
-    Counter.defaultProps = { text: "Hello" }
+    Counter.defaultProps = { 
+      text: "Hello",
+      getDefaultPropsCalled: Counter.getDefaultPropsCalled() 
+    }
 
     // Trying to pass a number instead, like text={50} when you call render method below and you'll see error
     // since below line says it has to be a string!
-    Counter.propTypes = { text: React.PropTypes.string }
+    Counter.propTypes = { 
+      text: React.PropTypes.string
+    }
 
     ReactDOM.render(
       <Counter text="Hey Dude!"/>,

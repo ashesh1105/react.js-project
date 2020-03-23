@@ -11,24 +11,24 @@
   <body>
     <div id="app"></div>
     <script type="text/babel">
-    var LikesComponent = React.createClass({
-      updateLikes: function() {
+    class LikesComponent extends React.Component {
+
+      constructor(props) {
+        super(props);
+        this.state = {
+          popular: false
+        }
+        this.updateLikes = this.updateLikes.bind(this);
+      }
+
+      updateLikes() {
         ReactDOM.render(
           <LikesComponent likes={this.props.likes+1}/>,
           document.getElementById("app")
         )
-      },
-      getDefaultProps: function() {
-        return({
-          likes: 0
-        })
-      },
-      getInitialState: function() {
-        return({
-          popular: false
-        })
-      },
-      componentWillReceiveProps: function(nextProps) {
+      }
+
+      componentWillReceiveProps(nextProps) {
         // Note that this method is not called when component is rendered initially. It is done on prior to subsequent rendering
         console.log("componentWillReceiveProps method called!");
         console.log("nextProps at componentWillReceiveProps method: ", nextProps);
@@ -38,8 +38,9 @@
         if (nextProps.likes >= 10) {
           console.log("You are now popular!");
         }
-      },
-      shouldComponentUpdate: function(nextProps, nextState) {
+      }
+
+      shouldComponentUpdate(nextProps, nextState) {
         console.log("shouldComponentUpdate method called!");
         console.log("Should update nextProps: ", nextProps);
         console.log("Should update nextState: ", nextState);
@@ -50,8 +51,9 @@
           will never render.
         */
         // return true;
-      },
-      render: function() {
+      }
+
+      render() {
         console.log("Component Rendered");
         return (
           <div className="container">
@@ -59,16 +61,21 @@
             <button className="btn blue-btn" onClick={this.updateLikes}>Likes: {this.props.likes}</button>
           </div>
         )
-      },
+      }
+
       // Called every time component gets re-rendered. It has access to DOM
       // Note that opposite to shouldComponentUpdate, this method get previous props and state as arguments
-      componentDidUpdate: function(prevProps, prevState) {
+      componentDidUpdate(prevProps, prevState) {
         console.log("componentDidUpdate method called!");
         console.log("Previous Props ", prevProps);
         console.log("Previous State ", prevState);
         console.log(ReactDOM.findDOMNode(this));
       }
-    });
+    }
+
+    LikesComponent.defaultProps = {
+      likes: 0
+    }
 
     ReactDOM.render(
       <LikesComponent />,

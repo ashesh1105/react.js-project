@@ -11,89 +11,108 @@
   <body>
     <div id="app"></div>
     <script type="text/babel">
-    var LifecycleComponent = React.createClass({
-      increment: function() {
+    class LifecycleComponent extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          count: 0,
+          getInitialStateCalled: this.getInitialStateCalled() // To log it via this method
+        }
+        this.getInitialStateCalled = this.getInitialStateCalled.bind(this);
+        this.increment = this.increment.bind(this);
+      }
+      increment() {
         this.setState({
           count: this.state.count + 1
         })
-      },
+      }
       // 1 called ONCE
       // BEFORE COMPONENT IS RENDERED
       // HAPPENS WHEN OUR CLASS IS CREATED!!! So this happens before we even think about rendering the component!
-      getDefaultProps: function() {
+      // We call this from where defaultProps is set, which is outside of this component, hence, this needs
+      // to be a static method
+      static getDefaultPropsCalled() {
         console.log("Getting our default properties for LifecycleComponent.");
-      },
+      }
       // 2 called ONCE
       // BEFORE COMPONENT IS RENDERED
       // The return value will be used as the initial value of this.state.
-      getInitialState: function() {
+      // This method is called when initialState is set from inside constructor
+      getInitialStateCalled() {
         console.log("Getting our initial state for LifecycleComponent.");
-        return({
-          count: 0
-        })
-      },
+      }
       // 3 called ONCE
       // BEFORE COMPONENT IS RENDERED
       // Does not has access to DOM but has access to props and states since it is called #3 in order
-      componentWillMount: function() {
+      componentWillMount() {
         console.log("props: ", this.props);
         console.log("state: ", this.state);
         console.log("LifecycleComponent is mounting..");
-      },
+      }
       // 4
       // Happend whenever our component changes
-      render: function() {
+      render() {
         console.log("LifecycleComponent is rendered.");
         return (
           <button className="btn blue-btn" onClick={this.increment}>{this.state.count}</button>
         )
-      },
+      }
       // 5 ONLY ONCE
       // AFTER COMPONENT HAS RENDERED
       // If you want to integrate with other JavaScript frameworks,
       //  set timers using setTimeout or setInterval, or send AJAX requests,
       // perform those operations in this method.
 
-      componentDidMount: function() {
+      componentDidMount() {
         console.log("LifecycleComponent has rendered.");
         this.interval = setInterval(this.increment, 1000);
-      },
+      }
 
       // 6 ONLY ONCE
       // AFTER COMPONENT HAS RENDERED
       // Perform any necessary cleanup in this method,
       //  such as invalidating timers or cleaning up any DOM
       // elements that were created in componentDidMount.
-      componentWillUnmount: function() {
+      componentWillUnmount() {
         clearInterval(this.interval);
         console.log('LifecycleComponent Unmounted! Cleared the interval too!');
       }
-    });
+    }
+
+  LifecycleComponent.defaultProps = {
+    // getDefaultPropsCalled is defined as static in LifeCycleComponent, so referred below way
+    getDefaultPropsCalled: LifecycleComponent.getDefaultPropsCalled()
+  }
 
     // We need another component which will render another component in itself
     // This will allow us to demonstrate componentWillUnmount lifecycle method
-    var LifecycleContainer = React.createClass({
-        mount: function() {
+    class LifecycleContainer extends React.Component {
+      constructor(props) {
+        super(props);
+        this.mount = this.mount.bind(this);
+        this.unmount = this.unmount.bind(this);
+      }
+      mount() {
           // This will render another component LifecycleComponent
           ReactDOM.render(
             <LifecycleComponent />,
             document.getElementById('renderHere')
           );
-        },
-        unmount: function() {
+      }
+      unmount() {
           ReactDOM.unmountComponentAtNode(document.getElementById('renderHere'));
-        },
-        render: function() {
-          console.log("LifecycleContainer component is Rendered.");
-          return(
-            <div className="container">
-              <button className="btn green-btn" onClick={this.mount}>Mount</button>
-              <button className="btn red-btn" onClick={this.unmount}>Unmount</button>
-              <div id="renderHere"></div>
-            </div>
-          )
-        }
-    });
+      }
+      render() {
+        console.log("LifecycleContainer component is Rendered.");
+        return(
+          <div className="container">
+            <button className="btn green-btn" onClick={this.mount}>Mount</button>
+            <button className="btn red-btn" onClick={this.unmount}>Unmount</button>
+            <div id="renderHere"></div>
+          </div>
+        )
+      }
+    }
 
     ReactDOM.render(
       <LifecycleContainer />,
